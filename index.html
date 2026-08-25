@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Cao Jiajia | 个人主页</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,13 +34,18 @@
       padding: 0;
     }
 
-    body, html {
-      width: 100vw;
-      height: 100vh;
+    /* 移动端全屏完美溢出拦截与对齐修复 */
+    html, body {
+      width: 100%;
+      height: 100%;
+      max-width: 100vw;
+      max-height: 100vh;
       overflow: hidden;
+      position: relative;
       font-family: 'Noto Sans SC', sans-serif;
       color: var(--text-main);
       background-color: var(--bg-green-light);
+      touch-action: manipulation;
     }
 
     /* 全局背景：渐变 + 网格底纹图案 */
@@ -75,6 +80,7 @@
       pointer-events: none;
     }
 
+    /* 修复定位偏右：采用精确 translate(-50%, -50%) */
     .app-viewport {
       position: absolute;
       top: 50%;
@@ -265,7 +271,7 @@
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(218, 240, 227, 0.85) 100%);
     }
 
-    /* ================= 模块 1: 关于我 (横向叠加) ================= */
+    /* ================= 模块 1: 关于我 ================= */
     .who-container {
       display: flex;
       gap: 50px;
@@ -464,7 +470,7 @@
       text-align: center;
     }
 
-    /* ================= 模块 3: 校园成就 (完全重构与解决独立滑动) ================= */
+    /* ================= 模块 3: 校园成就 ================= */
     .campus-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -515,7 +521,6 @@
     .paper-item-card a { display: inline-block; margin-top: 12px; font-size: 20.8px; color: var(--accent-color); text-decoration: none; font-weight: 700; transition: color 0.3s; }
     .paper-item-card a:hover { color: var(--accent-hover); text-decoration: underline; }
 
-    /* 下方两张卡片容器 */
     .scroll-card-box {
       padding: 20px 24px;
       display: flex;
@@ -536,7 +541,6 @@
     .box-header-row h4 { font-size: 26px; color: var(--accent-color); font-weight: 700; }
     .box-header-row span.sub-tip { font-size: 16px; color: var(--text-sub); opacity: 0.8; }
 
-    /* 学生工作滑动容器 */
     .scroll-content-work-grid {
       overflow-y: auto !important;
       display: grid;
@@ -545,9 +549,9 @@
       padding-right: 8px;
       flex: 1;
       height: 100%;
+      -webkit-overflow-scrolling: touch;
     }
 
-    /* 自定义美化滚动条 */
     .scroll-content-work-grid::-webkit-scrollbar,
     .award-sub-list::-webkit-scrollbar { width: 6px; }
     .scroll-content-work-grid::-webkit-scrollbar-thumb,
@@ -572,7 +576,6 @@
     .work-item-row .info h5 { font-size: 18px; color: var(--text-main); line-height: 1.3; }
     .work-item-row .info span { font-size: 15px; color: var(--text-sub); }
 
-    /* 荣誉成就：核心修复 - 三列各自独立的 Grid 弹性及溢出滑动结构 */
     .award-triple-container {
       display: grid;
       grid-template-columns: 1fr 1fr 1.2fr;
@@ -591,11 +594,10 @@
       height: 100%;
       border: 1px solid rgba(255,255,255,0.7);
       box-sizing: border-box;
-      overflow: hidden; /* 防止挤破层级 */
+      overflow: hidden;
     }
     .award-sub-card h5 { font-size: 19px; color: var(--accent-color); margin-bottom: 8px; font-weight: 700; flex-shrink: 0; }
     
-    /* 关键属性：支持高自适应+自动垂直滑动 */
     .award-sub-list { 
       overflow-y: auto !important; 
       display: flex; 
@@ -603,7 +605,8 @@
       gap: 6px; 
       padding-right: 6px; 
       flex: 1;
-      min-height: 0; /* flex容器可滑动的核心关键点 */
+      min-height: 0;
+      -webkit-overflow-scrolling: touch;
     }
     
     .award-sub-item { 
@@ -1049,7 +1052,7 @@
         </div>
       </section>
 
-      <!-- 3. 校园成就 (完全修复独立滑动与完美适配) -->
+      <!-- 3. 校园成就 -->
       <section>
         <div class="section-header campus-header">
           <div class="section-slogan-cn">在自己的时区里，不断攀爬</div>
@@ -1086,7 +1089,7 @@
             <a href="paper2.pdf" download>下载论文 PDF &#10515;</a>
           </div>
 
-          <!-- 学生工作 (可上下滑动) -->
+          <!-- 学生工作 -->
           <div class="scroll-card-box glass-card">
             <div class="box-header-row">
               <h4>学生工作</h4>
@@ -1106,7 +1109,7 @@
             </div>
           </div>
 
-          <!-- 荣誉成就 (修复：奖学金、荣誉表彰、科研竞赛三列均可流畅独立上下滑动) -->
+          <!-- 荣誉成就 -->
           <div class="scroll-card-box glass-card">
             <div class="box-header-row">
               <h4>荣誉成就</h4>
@@ -1250,7 +1253,7 @@
         </div>
       </section>
 
-      <!-- 5. 技能爱好 (修正提示文案为“点击抽取卡片”) -->
+      <!-- 5. 技能爱好 -->
       <section>
         <div class="section-header skill-header">
           <div class="section-slogan-cn">底色多元，热爱不息</div>
@@ -1357,34 +1360,26 @@
   </div>
 
   <script>
-    // 0. 自适应 16:9 响应式缩放
+    // 0. 自适应响应式缩放（彻底解决微信/手机端显示不全、偏右、放大溢出问题）
     const BASE_WIDTH = 1965.6;
     const BASE_HEIGHT = 1105;
-    const TARGET_RATIO = 16 / 9;
 
     function handleResize() {
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
-      const currentRatio = windowWidth / windowHeight;
 
-      let targetWidth, targetHeight;
+      // 无论手机在竖屏还是横屏状态，取 widthScale 和 heightScale 中的较小值，强制将页面完全塞入屏幕视口内部
+      const scaleX = windowWidth / BASE_WIDTH;
+      const scaleY = windowHeight / BASE_HEIGHT;
+      const scale = Math.min(scaleX, scaleY);
 
-      if (currentRatio > TARGET_RATIO) {
-        targetHeight = windowHeight;
-        targetWidth = targetHeight * TARGET_RATIO;
-      } else {
-        targetWidth = windowWidth;
-        targetHeight = targetWidth / TARGET_RATIO;
-      }
-
-      const scale = targetWidth / BASE_WIDTH;
       const appViewport = document.getElementById('appViewport');
-
       appViewport.style.transform = `translate(-50%, -50%) scale(${scale})`;
     }
 
     window.addEventListener('resize', handleResize);
-    window.addEventListener('DOMContentLoaded', handleResize);
+    window.addEventListener('orientationchange', handleResize);
+    document.addEventListener('DOMContentLoaded', handleResize);
 
     // 1. 全屏横向滑动控制
     let currentSlide = 0;
@@ -1423,7 +1418,39 @@
       }
     }
 
-    // 2. 塔罗牌抽卡逻辑
+    // 2. 手机端与平板端触屏左右滑动翻页支持
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      // 避免如果在局部可垂直滑动列表中拖动时误触发左右翻页
+      const target = e.target;
+      if (target && target.closest && (target.closest('.scroll-content-work-grid') || target.closest('.award-sub-list'))) {
+        const deltaY = Math.abs(e.changedTouches[0].clientY - touchStartY);
+        if (deltaY > 30) return; // 属于上下滑动，不触发翻页
+      }
+
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const diffX = touchEndX - touchStartX;
+      const diffY = touchEndY - touchStartY;
+
+      // 判断方向：水平滑动距离大于50px 且 水平幅度大于垂直幅度
+      if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX < 0) {
+          nextSlide(); // 向左滑 -> 翻下一页
+        } else {
+          prevSlide(); // 向右滑 -> 翻上一页
+        }
+      }
+    }, { passive: true });
+
+    // 3. 塔罗牌抽卡逻辑
     const personalityItems = ['ENFP', '浅浅地卷', '情绪稳定', '活力热情', '超强执行力', 'Ownership', '开放包容', '终身学习', '多线程协调'];
     const skillsItems = ['AI技能', '数据分析', '文案撰写', '物料设计'];
 
@@ -1466,7 +1493,7 @@
       }, 450);
     }
 
-    // 3. 图片轮播
+    // 4. 图片轮播
     function startCarousel(carouselId) {
       const imgs = document.querySelectorAll(`#${carouselId} img`);
       if (imgs.length <= 1) return;
@@ -1481,7 +1508,7 @@
     startCarousel('drawCarousel');
     startCarousel('photoCarousel');
 
-    // 4. 卡片翻转交互
+    // 5. 卡片翻转交互
     function flipAndCopy(card, text) {
       card.classList.toggle('flipped');
       navigator.clipboard.writeText(text);
