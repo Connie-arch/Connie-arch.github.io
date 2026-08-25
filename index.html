@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cao Jiajia | 个人主页</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,7 +45,7 @@
       font-family: 'Noto Sans SC', sans-serif;
       color: var(--text-main);
       background-color: var(--bg-green-light);
-      touch-action: manipulation;
+      touch-action: pan-x pan-y;
     }
 
     /* 全局背景：渐变 + 网格底纹图案 */
@@ -168,7 +168,7 @@
       box-shadow: 0 4px 12px rgba(31, 51, 41, 0.2);
     }
 
-    .contact-btn:hover {
+    .contact-btn:hover, .contact-btn.active {
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(45, 90, 67, 0.35);
       background: linear-gradient(135deg, #2d5a43 0%, #1e3f2e 100%);
@@ -968,7 +968,7 @@
         <a class="nav-link" onclick="goToSlide(3)">实习经历</a>
         <a class="nav-link" onclick="goToSlide(4)">技能爱好</a>
       </nav>
-      <a class="contact-btn" onclick="goToSlide(5)">联系我</a>
+      <a class="contact-btn nav-link" onclick="goToSlide(5)">联系我</a>
     </header>
 
     <!-- 左右翻页按钮 -->
@@ -1387,6 +1387,7 @@
     const slider = document.getElementById('slider');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    // 涵盖所有导航元素（包含右侧联系我按钮）
     const navLinks = document.querySelectorAll('.nav-link');
 
     function updateSlide() {
@@ -1394,6 +1395,7 @@
       prevBtn.classList.toggle('disabled', currentSlide === 0);
       nextBtn.classList.toggle('disabled', currentSlide === totalSlides - 1);
 
+      // 每次切换时统一重置所有导航高亮状态，仅保持当前视图对应的导航高亮
       navLinks.forEach((link, idx) => {
         link.classList.toggle('active', idx === currentSlide);
       });
