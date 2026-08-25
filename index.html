@@ -22,6 +22,9 @@
       --card-border: rgba(255, 255, 255, 0.95);
       --shadow-soft: 0 14px 36px rgba(45, 90, 67, 0.08);
       --border-radius: 20px;
+      /* 基准屏幕尺寸（基于 MacBook Neo / Air 基准分辨率） */
+      --base-width: 1512px;
+      --base-height: 850px;
     }
 
     * {
@@ -31,54 +34,21 @@
     }
 
     body, html {
-      width: 100%;
-      height: 100%;
-      overflow-x: hidden;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
       font-family: 'Noto Sans SC', sans-serif;
       color: var(--text-main);
       background-color: var(--bg-green-light);
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
-    /* 上下超出的渐变填充遮罩 */
-    body::before, body::after {
-      content: "";
-      position: fixed;
-      left: 0;
-      width: 100vw;
-      height: 12vh;
-      z-index: 999;
-      pointer-events: none;
-    }
-    body::before {
-      top: 0;
-      background: linear-gradient(to bottom, var(--bg-green-light) 20%, transparent 100%);
-    }
-    body::after {
-      bottom: 0;
-      background: linear-gradient(to top, var(--bg-green-light) 20%, transparent 100%);
-    }
-
-    /* 限制所有内容统一在 16:9 视口容器中 */
-    .viewport-wrapper {
-      position: relative;
-      width: 100vw;
-      height: calc(100vw * 9 / 16);
-      max-height: 100vh;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
-      box-shadow: 0 0 50px rgba(45, 90, 67, 0.15);
-    }
-
-    /* 全局背景：渐变 + 网格底纹图案 */
+    /* 全局背景：渐变 + 网格底纹图案 (全局全屏铺满) */
     .bg-mesh {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
       background: 
         radial-gradient(circle at 12% 18%, rgba(200, 230, 210, 0.8) 0%, transparent 40%),
@@ -90,11 +60,11 @@
 
     /* 叠加底纹几何线条/点阵 */
     .bg-pattern {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
       opacity: 0.35;
       background-image: 
@@ -103,6 +73,17 @@
         linear-gradient(to bottom, rgba(45, 90, 67, 0.03) 1px, transparent 1px);
       background-size: 24px 24px, 40px 40px, 40px 40px;
       pointer-events: none;
+    }
+
+    /* 视口自适应外层容器 (锁定 16:9 比例) */
+    .app-viewport {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--base-width);
+      height: var(--base-height);
+      transform-origin: center center;
+      overflow: hidden;
     }
 
     /* 顶部导航栏 */
@@ -183,17 +164,17 @@
 
     /* 横向翻页 */
     .slider-container {
-      width: 100%;
+      width: calc(var(--base-width) * 6);
       height: 100%;
       display: flex;
       transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     section {
-      width: 100%;
-      height: 100%;
+      width: var(--base-width);
+      height: var(--base-height);
       flex-shrink: 0;
-      padding: 85px 80px 30px 80px;
+      padding: 95px 80px 30px 80px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -204,21 +185,21 @@
 
     .section-header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 34px;
     }
 
     .section-slogan-cn {
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 700;
       color: var(--text-main);
       letter-spacing: 1.5px;
     }
 
     .section-slogan-en {
-      font-size: 15px;
+      font-size: 16px;
       font-family: 'Poppins', sans-serif;
       color: var(--text-sub);
-      margin-top: 6px;
+      margin-top: 8px;
       font-weight: 400;
       letter-spacing: 0.8px;
       opacity: 0.88;
@@ -276,21 +257,21 @@
     }
 
     .who-title {
-      font-size: 52px;
+      font-size: 56px;
       font-weight: 700;
       line-height: 1.25;
-      margin-bottom: 28px;
+      margin-bottom: 35px;
     }
 
-    .who-subtitle-box { margin-bottom: 24px; }
-    .who-subtitle-cn { font-size: 22px; color: var(--accent-color); font-weight: 600; }
+    .who-subtitle-box { margin-bottom: 28px; }
+    .who-subtitle-cn { font-size: 24px; color: var(--accent-color); font-weight: 600; }
     .who-subtitle-en { font-size: 13px; font-family: 'Poppins', sans-serif; color: var(--text-sub); margin-top: 4px; }
 
     .who-motto {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 500;
       color: var(--text-main);
-      margin-bottom: 28px;
+      margin-bottom: 32px;
       line-height: 1.6;
       border-left: 4px solid var(--accent-color);
       padding-left: 16px;
@@ -299,9 +280,9 @@
     .who-cards { display: flex; gap: 16px; }
 
     .gradient-card {
-      padding: 10px 20px;
+      padding: 12px 24px;
       border-radius: 14px;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       color: var(--accent-color);
       background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(200, 235, 215, 0.75));
@@ -331,8 +312,8 @@
 
     .photo-wrapper {
       position: relative;
-      width: 420px;
-      height: 460px;
+      width: 460px;
+      height: 520px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -343,7 +324,7 @@
       top: 15px;
       left: -20px;
       font-family: 'Caveat', cursive;
-      font-size: 50px;
+      font-size: 54px;
       font-weight: 700;
       color: var(--accent-color);
       transform: rotate(-45deg);
@@ -368,7 +349,7 @@
       max-height: 100%;
       object-fit: contain;
       z-index: 2;
-      transform: scale(1.1);
+      transform: scale(1.15);
       filter: drop-shadow(0 12px 24px rgba(45, 90, 67, 0.15));
     }
 
@@ -376,7 +357,7 @@
     .edu-container {
       display: flex;
       justify-content: center;
-      gap: 28px;
+      gap: 32px;
       max-width: 1250px;
       width: 100%;
       margin: 0 auto;
@@ -393,18 +374,18 @@
 
     .edu-card img {
       width: 100%;
-      height: 160px;
+      height: 175px;
       object-fit: cover;
     }
 
     .edu-card-body {
-      padding: 20px;
+      padding: 24px;
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .edu-school-row {
@@ -416,27 +397,27 @@
     }
 
     .edu-school-row .school {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: var(--text-main);
     }
     .edu-school-row .date {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--accent-color);
       font-weight: 700;
     }
 
-    .edu-card-body .college { font-size: 13px; color: var(--text-sub); }
-    .edu-card-body .degree { font-size: 12px; color: var(--text-sub); }
+    .edu-card-body .college { font-size: 14px; color: var(--text-sub); }
+    .edu-card-body .degree { font-size: 13px; color: var(--text-sub); }
 
     .edu-card-body .major-highlight-full {
       width: 100%;
-      margin-top: 6px;
+      margin-top: 8px;
       background: rgba(45, 90, 67, 0.08);
       color: var(--accent-color);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
-      padding: 6px 0;
+      padding: 8px 0;
       border-radius: 8px;
       border-left: 3px solid var(--accent-color);
       border-right: 3px solid var(--accent-color);
@@ -449,13 +430,14 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: auto auto;
-      gap: 16px;
+      gap: 20px;
       max-width: 1250px;
       width: 100%;
+      max-height: calc(100% - 100px);
     }
 
     .paper-item-card {
-      padding: 18px 22px;
+      padding: 22px 26px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -464,15 +446,15 @@
     .paper-header-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
+      gap: 10px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
     }
-    .paper-date { font-size: 12px; font-weight: 700; color: var(--accent-color); margin-right: 4px; }
+    .paper-date { font-size: 13px; font-weight: 700; color: var(--accent-color); margin-right: 6px; }
 
     .paper-tag-highlight {
-      font-size: 11px;
-      padding: 2px 8px;
+      font-size: 12px;
+      padding: 3px 10px;
       border-radius: 12px;
       background: linear-gradient(135deg, #2d5a43, #1e3f2e);
       color: #fff;
@@ -481,41 +463,41 @@
     }
 
     .paper-tag {
-      font-size: 10px;
-      padding: 2px 6px;
+      font-size: 11px;
+      padding: 3px 8px;
       border-radius: 6px;
       background: rgba(45, 90, 67, 0.1);
       color: var(--accent-color);
       font-weight: 600;
     }
 
-    .paper-item-card h4 { font-size: 15px; margin-bottom: 4px; color: var(--text-main); }
-    .paper-item-card p { font-size: 11px; color: var(--text-sub); line-height: 1.35; }
-    .paper-item-card a { display: inline-block; margin-top: 8px; font-size: 11px; color: var(--accent-color); text-decoration: none; font-weight: 700; }
+    .paper-item-card h4 { font-size: 16px; margin-bottom: 6px; color: var(--text-main); }
+    .paper-item-card p { font-size: 12px; color: var(--text-sub); line-height: 1.4; }
+    .paper-item-card a { display: inline-block; margin-top: 10px; font-size: 12px; color: var(--accent-color); text-decoration: none; font-weight: 700; }
 
     .scroll-card-box {
-      padding: 16px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      height: 230px;
+      height: 270px;
     }
 
     .box-header-row {
       display: flex;
       align-items: baseline;
       gap: 10px;
-      margin-bottom: 10px;
-      padding-bottom: 4px;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
       border-bottom: 1px solid rgba(45, 90, 67, 0.12);
     }
-    .box-header-row h4 { font-size: 16px; color: var(--accent-color); font-weight: 700; }
-    .box-header-row span.sub-tip { font-size: 10px; color: var(--text-sub); opacity: 0.8; }
+    .box-header-row h4 { font-size: 18px; color: var(--accent-color); font-weight: 700; }
+    .box-header-row span.sub-tip { font-size: 11px; color: var(--text-sub); opacity: 0.8; }
 
     .scroll-content-work-grid {
       overflow-y: auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 10px;
       padding-right: 6px;
       flex: 1;
     }
@@ -528,97 +510,97 @@
     .work-item-row {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       background: rgba(255,255,255,0.7);
-      padding: 6px 8px;
-      border-radius: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
       border: 1px solid rgba(255,255,255,0.8);
     }
-    .work-item-row img { width: 32px; height: 32px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
-    .work-item-row .info h5 { font-size: 11px; color: var(--text-main); line-height: 1.2; }
-    .work-item-row .info span { font-size: 9px; color: var(--text-sub); }
+    .work-item-row img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+    .work-item-row .info h5 { font-size: 12px; color: var(--text-main); line-height: 1.3; }
+    .work-item-row .info span { font-size: 10px; color: var(--text-sub); }
 
     .award-triple-container {
       display: grid;
       grid-template-columns: 1fr 1fr 1.15fr;
-      gap: 10px;
+      gap: 12px;
       flex: 1;
       height: 100%;
       overflow: hidden;
     }
-    .award-sub-card { background: rgba(255, 255, 255, 0.55); border-radius: 10px; padding: 8px; display: flex; flex-direction: column; height: 100%; }
-    .award-sub-card h5 { font-size: 12px; color: var(--accent-color); margin-bottom: 6px; font-weight: 700; }
-    .award-sub-list { overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px; max-height: 150px; }
-    .award-sub-item { font-size: 10px; line-height: 1.3; color: var(--text-main); }
-    .award-sub-item .date { font-size: 9px; color: var(--accent-color); font-weight: 700; margin-right: 4px; }
-    .award-level-tag { font-size: 9px; font-weight: 700; color: var(--text-sub); margin: 3px 0 1px 0; border-bottom: 1px dashed rgba(0,0,0,0.1); }
+    .award-sub-card { background: rgba(255, 255, 255, 0.55); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; height: 100%; }
+    .award-sub-card h5 { font-size: 13px; color: var(--accent-color); margin-bottom: 8px; font-weight: 700; }
+    .award-sub-list { overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; max-height: 175px; }
+    .award-sub-item { font-size: 11px; line-height: 1.35; color: var(--text-main); }
+    .award-sub-item .date { font-size: 10px; color: var(--accent-color); font-weight: 700; margin-right: 4px; }
+    .award-level-tag { font-size: 10px; font-weight: 700; color: var(--text-sub); margin: 4px 0 2px 0; border-bottom: 1px dashed rgba(0,0,0,0.1); }
 
     /* ================= 模块 4: 实习经历 ================= */
     .intern-container {
       display: flex;
-      gap: 20px;
+      gap: 22px;
       max-width: 1200px;
       width: 100%;
     }
 
     .intern-card { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
-    .intern-card img { width: 100%; height: 135px; object-fit: cover; }
-    .intern-body { padding: 18px; flex: 1; }
-    .intern-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-    .intern-body h3 { font-size: 18px; }
-    .intern-date { font-size: 11px; color: var(--accent-color); font-weight: 700; }
+    .intern-card img { width: 100%; height: 145px; object-fit: cover; }
+    .intern-body { padding: 20px; flex: 1; }
+    .intern-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .intern-body h3 { font-size: 19px; }
+    .intern-date { font-size: 12px; color: var(--accent-color); font-weight: 700; }
 
-    .intern-dept { font-size: 14px; color: var(--text-sub); margin-bottom: 3px; }
-    .intern-post { font-size: 14px; font-weight: 700; color: var(--accent-color); margin-bottom: 12px; }
+    .intern-dept { font-size: 15px; color: var(--text-sub); margin-bottom: 4px; }
+    .intern-post { font-size: 15px; font-weight: 700; color: var(--accent-color); margin-bottom: 14px; }
 
-    .intern-tags { display: flex; flex-direction: column; gap: 8px; }
+    .intern-tags { display: flex; flex-direction: column; gap: 9px; }
     .intern-tag-item {
       background: rgba(255, 255, 255, 0.9);
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 11px;
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-size: 12px;
       color: var(--text-main);
       border-left: 3px solid var(--accent-color);
       box-shadow: 0 3px 10px rgba(0,0,0,0.03);
-      line-height: 1.35;
+      line-height: 1.4;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .intern-tag-item::after { content: "✦"; font-size: 9px; color: var(--accent-color); opacity: 0.4; }
+    .intern-tag-item::after { content: "✦"; font-size: 10px; color: var(--accent-color); opacity: 0.4; }
 
     /* ================= 模块 5: 技能爱好 ================= */
     .skill-container {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
       max-width: 1150px;
       width: 100%;
     }
 
     .tarot-area {
       display: flex;
-      gap: 24px;
+      gap: 30px;
       justify-content: center;
       width: 100%;
     }
 
     .tarot-box {
       flex: 1;
-      padding: 16px;
+      padding: 20px 20px 16px 20px;
       text-align: center;
     }
 
     .tarot-box h4 {
-      font-size: 20px; 
+      font-size: 22px; 
       color: var(--accent-color);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       font-weight: 700;
     }
 
     .deck {
       position: relative;
-      height: 160px;
+      height: 180px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -627,8 +609,8 @@
 
     .tarot-card {
       position: absolute;
-      width: 95px;
-      height: 155px;
+      width: 105px;
+      height: 175px;
       background: linear-gradient(145deg, #1b2820 0%, #0d1612 100%);
       border: 1px solid #d4af37;
       border-radius: 8px;
@@ -636,7 +618,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 5px;
+      padding: 10px 6px;
       color: #fce8b3;
       box-shadow: 0 8px 16px rgba(0,0,0,0.18);
       transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
@@ -654,38 +636,38 @@
     }
 
     .tarot-card-symbol {
-      width: 36px;
-      height: 36px;
+      width: 42px;
+      height: 42px;
       border: 1px dashed rgba(212, 175, 55, 0.5);
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 12px;
-      font-size: 13px;
+      margin-top: 15px;
+      font-size: 15px;
       color: #d4af37;
     }
 
-    .tarot-card-text { font-size: 11px; font-weight: 700; color: #fce8b3; margin-bottom: 8px; }
+    .tarot-card-text { font-size: 12px; font-weight: 700; color: #fce8b3; margin-bottom: 10px; }
 
     .tarot-hint {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-sub);
-      margin-top: 10px; 
+      margin-top: 14px; 
       opacity: 0.85;
     }
 
     .hobby-section-title {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
       color: var(--accent-color);
-      margin-bottom: 10px;
+      margin-bottom: 14px;
       text-align: center;
     }
 
     .hobby-area {
       display: flex;
-      gap: 14px;
+      gap: 16px;
       width: 100%;
       justify-content: space-between;
     }
@@ -695,15 +677,15 @@
       overflow: hidden;
       text-align: center;
     }
-    .carousel { position: relative; width: 100%; height: 105px; }
+    .carousel { position: relative; width: 100%; height: 115px; }
     .carousel img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0; transition: opacity 0.5s ease; }
     .carousel img.active { opacity: 1; }
-    .hobby-title { padding: 6px; font-size: 12px; font-weight: 600; }
+    .hobby-title { padding: 8px; font-size: 13px; font-weight: 600; }
 
     /* ================= 模块 6: 联系我 ================= */
     .contact-wrapper {
       position: relative;
-      max-width: 900px;
+      max-width: 950px;
       width: 100%;
       display: flex;
       justify-content: center;
@@ -720,10 +702,10 @@
 
     .art-circle-1 {
       position: absolute;
-      width: 300px;
-      height: 300px;
-      top: -50px;
-      left: -40px;
+      width: 340px;
+      height: 340px;
+      top: -60px;
+      left: -50px;
       background: radial-gradient(circle, rgba(160, 215, 185, 0.45) 0%, transparent 70%);
       filter: blur(20px);
       animation: floatBg 8s ease-in-out infinite alternate;
@@ -731,10 +713,10 @@
 
     .art-circle-2 {
       position: absolute;
-      width: 360px;
-      height: 360px;
-      bottom: -60px;
-      right: -30px;
+      width: 400px;
+      height: 400px;
+      bottom: -70px;
+      right: -40px;
       background: radial-gradient(circle, rgba(200, 230, 210, 0.55) 0%, transparent 70%);
       filter: blur(25px);
       animation: floatBg 10s ease-in-out infinite alternate-reverse;
@@ -750,7 +732,7 @@
       width: 100%;
       position: relative;
       z-index: 1;
-      padding: 40px 32px;
+      padding: 48px 40px;
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(225, 242, 232, 0.65) 100%);
       border: 1.5px solid rgba(255, 255, 255, 0.95);
       border-radius: 32px;
@@ -761,9 +743,9 @@
     }
 
     .contact-title {
-      font-size: 36px;
+      font-size: 42px;
       font-weight: 700;
-      margin-bottom: 35px;
+      margin-bottom: 45px;
       color: var(--text-main);
       line-height: 1.4;
       letter-spacing: 1px;
@@ -771,13 +753,13 @@
 
     .cards-wrapper {
       display: flex;
-      gap: 24px;
+      gap: 30px;
       justify-content: center;
     }
 
     .flip-card {
-      width: 230px;
-      height: 105px;
+      width: 250px;
+      height: 115px;
       perspective: 1000px;
       cursor: pointer;
     }
@@ -802,14 +784,14 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 12px;
       box-shadow: 0 8px 24px rgba(45, 90, 67, 0.08);
     }
 
     .flip-front {
       background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(225,242,232,0.85));
       border: 1px solid rgba(255, 255, 255, 0.95);
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--accent-color);
     }
@@ -818,20 +800,21 @@
       background: linear-gradient(135deg, #2d5a43, #1e3f2e);
       color: #fff;
       transform: rotateY(180deg);
-      font-size: 12px;
+      font-size: 13px;
       word-break: break-all;
     }
 
-    .flip-back span { margin-top: 5px; font-size: 9px; opacity: 0.75; }
+    .flip-back span { margin-top: 6px; font-size: 10px; opacity: 0.75; }
   </style>
 </head>
 <body>
 
-  <!-- 限制核心展区在固定 16:9 比例中 -->
-  <div class="viewport-wrapper">
-    <!-- 动态弥散背景 + 底纹 Pattern -->
-    <div class="bg-mesh"></div>
-    <div class="bg-pattern"></div>
+  <!-- 动态弥散背景 + 底纹 Pattern (填满任意尺寸的屏幕) -->
+  <div class="bg-mesh"></div>
+  <div class="bg-pattern"></div>
+
+  <!-- 视口自适应外层容器 (锁定 16:9 比例) -->
+  <div class="app-viewport" id="appViewport">
 
     <!-- 顶部悬浮胶囊导航栏 -->
     <header>
@@ -889,6 +872,7 @@
           <div class="section-slogan-en">Do what I love, and find the best way forward</div>
         </div>
         <div class="edu-container">
+          <!-- 本科 -->
           <div class="edu-card glass-card">
             <img src="school1.jpg" alt="西安交通大学" />
             <div class="edu-card-body">
@@ -901,6 +885,7 @@
               <div class="major-highlight-full">大数据与智慧城市</div>
             </div>
           </div>
+          <!-- 辅修 -->
           <div class="edu-card glass-card">
             <img src="school2.jpg" alt="西安交通大学" />
             <div class="edu-card-body">
@@ -913,6 +898,7 @@
               <div class="major-highlight-full">金融学</div>
             </div>
           </div>
+          <!-- 硕士 -->
           <div class="edu-card glass-card">
             <img src="school3.jpg" alt="西安交通大学" />
             <div class="edu-card-body">
@@ -935,6 +921,7 @@
           <div class="section-slogan-en">Ascend at my own pace, one steady step at a time</div>
         </div>
         <div class="campus-grid">
+          <!-- 论文 1 -->
           <div class="paper-item-card glass-card">
             <div>
               <div class="paper-header-row">
@@ -949,6 +936,7 @@
             <a href="paper1.pdf" download>下载论文 PDF &#10515;</a>
           </div>
 
+          <!-- 论文 2 -->
           <div class="paper-item-card glass-card">
             <div>
               <div class="paper-header-row">
@@ -963,6 +951,7 @@
             <a href="paper2.pdf" download>下载论文 PDF &#10515;</a>
           </div>
 
+          <!-- 学生工作 -->
           <div class="scroll-card-box glass-card">
             <div class="box-header-row">
               <h4>学生工作</h4>
@@ -982,6 +971,7 @@
             </div>
           </div>
 
+          <!-- 荣誉成就 -->
           <div class="scroll-card-box glass-card">
             <div class="box-header-row">
               <h4>荣誉成就</h4>
@@ -1062,6 +1052,7 @@
           <div class="section-slogan-en">Conversing with the boundless possibilities of business in the Internet realm</div>
         </div>
         <div class="intern-container">
+          <!-- 字节 -->
           <div class="intern-card glass-card">
             <img src="bytedance.jpg" alt="字节跳动" />
             <div class="intern-body">
@@ -1080,6 +1071,7 @@
             </div>
           </div>
 
+          <!-- 得物 -->
           <div class="intern-card glass-card">
             <img src="dewu.jpg" alt="得物" />
             <div class="intern-body">
@@ -1097,6 +1089,7 @@
             </div>
           </div>
 
+          <!-- 平安银行 -->
           <div class="intern-card glass-card">
             <img src="pingan.jpg" alt="平安银行" />
             <div class="intern-body">
@@ -1123,6 +1116,7 @@
           <div class="section-slogan-en">Diverse in essence, fueled by passion</div>
         </div>
         <div class="skill-container">
+          <!-- 塔罗抽卡 -->
           <div class="tarot-area">
             <div class="tarot-box glass-card">
               <h4>性格底色</h4>
@@ -1136,6 +1130,7 @@
             </div>
           </div>
 
+          <!-- 兴趣爱好 -->
           <div>
             <div class="hobby-section-title">兴趣爱好</div>
             <div class="hobby-area">
@@ -1221,6 +1216,37 @@
   </div>
 
   <script>
+    // 0. 自适应 16:9 响应式缩放与渐变填充逻辑
+    const BASE_WIDTH = 1512;
+    const BASE_HEIGHT = 850;
+    const TARGET_RATIO = 16 / 9;
+
+    function handleResize() {
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      const currentRatio = windowWidth / windowHeight;
+
+      let targetWidth, targetHeight;
+
+      if (currentRatio > TARGET_RATIO) {
+        // 界面比 16:9 更宽（如 20:9）: 纵向铺满，横向采用渐变填充
+        targetHeight = windowHeight;
+        targetWidth = targetHeight * TARGET_RATIO;
+      } else {
+        // 界面比 16:9 更窄（如 10:9）: 横向铺满，纵向采用渐变填充
+        targetWidth = windowWidth;
+        targetHeight = targetWidth / TARGET_RATIO;
+      }
+
+      const scale = targetWidth / BASE_WIDTH;
+      const appViewport = document.getElementById('appViewport');
+
+      appViewport.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    }
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('DOMContentLoaded', handleResize);
+
     // 1. 全屏横向滑动控制
     let currentSlide = 0;
     const totalSlides = 6;
@@ -1230,7 +1256,7 @@
     const navLinks = document.querySelectorAll('.nav-link');
 
     function updateSlide() {
-      slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+      slider.style.transform = `translateX(-${currentSlide * BASE_WIDTH}px)`;
       prevBtn.classList.toggle('disabled', currentSlide === 0);
       nextBtn.classList.toggle('disabled', currentSlide === totalSlides - 1);
 
@@ -1288,7 +1314,7 @@
       if (cards.length === 0) return;
 
       const topCard = cards[0];
-      topCard.style.transform = `translateY(-100px) scale(1.08) rotate(0deg)`;
+      topCard.style.transform = `translateY(-110px) scale(1.08) rotate(0deg)`;
       topCard.style.zIndex = 99;
 
       setTimeout(() => {
