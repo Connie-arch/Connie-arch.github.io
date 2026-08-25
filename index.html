@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- 彻底开启移动端/平板端手势自由缩放 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover"/>
   <title>Cao Jiajia | 个人主页</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,18 +35,18 @@
       padding: 0;
     }
 
-    /* 移动端全屏完美溢出拦截与对齐修复 */
+    /* 允许手势缩放和双向滚动容器 */
     html, body {
       width: 100%;
       height: 100%;
-      max-width: 100vw;
-      max-height: 100vh;
       overflow: hidden;
       position: relative;
       font-family: 'Noto Sans SC', sans-serif;
       color: var(--text-main);
       background-color: var(--bg-green-light);
-      touch-action: pan-x pan-y;
+      /* 关键：恢复系统默认手势缩放行为 */
+      touch-action: manipulation;
+      -webkit-text-size-adjust: 100%;
     }
 
     /* 全局背景：渐变 + 网格底纹图案 */
@@ -80,7 +81,7 @@
       pointer-events: none;
     }
 
-    /* 修复定位偏右：采用精确 translate(-50%, -50%) */
+    /* 视口自适应外层容器 */
     .app-viewport {
       position: absolute;
       top: 50%;
@@ -88,7 +89,6 @@
       width: var(--base-width);
       height: var(--base-height);
       transform-origin: center center;
-      overflow: hidden;
     }
 
     /* 顶部导航栏 */
@@ -138,7 +138,8 @@
       border-radius: 40px;
     }
 
-    nav a {
+    /* 统一导航链接及联系我按钮的样式规则 */
+    .nav-link-item {
       text-decoration: none;
       color: var(--text-sub);
       font-size: 21.6px;
@@ -147,15 +148,24 @@
       border-radius: 26px;
       transition: all 0.3s ease;
       cursor: pointer;
+      display: inline-block;
     }
 
-    nav a:hover, nav a.active {
+    .nav-link-item:hover {
       color: #fff;
       background: linear-gradient(135deg, #2d5a43 0%, #1e3f2e 100%);
       box-shadow: 0 6px 16px rgba(45, 90, 67, 0.3);
     }
 
-    .contact-btn {
+    /* 高亮状态：精确覆盖所有类型按钮 */
+    .nav-link-item.active {
+      color: #fff !important;
+      background: linear-gradient(135deg, #2d5a43 0%, #1e3f2e 100%) !important;
+      box-shadow: 0 6px 16px rgba(45, 90, 67, 0.35) !important;
+    }
+
+    /* 联系我独立基础样式 */
+    .contact-btn-style {
       background: linear-gradient(135deg, #1f3329 0%, #2d5a43 100%);
       color: #fff;
       padding: 8px 22px;
@@ -168,7 +178,7 @@
       box-shadow: 0 4px 12px rgba(31, 51, 41, 0.2);
     }
 
-    .contact-btn:hover, .contact-btn.active {
+    .contact-btn-style:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(45, 90, 67, 0.35);
       background: linear-gradient(135deg, #2d5a43 0%, #1e3f2e 100%);
@@ -962,13 +972,13 @@
         Cao Jiajia
       </div>
       <nav>
-        <a class="nav-link active" onclick="goToSlide(0)">关于我</a>
-        <a class="nav-link" onclick="goToSlide(1)">教育背景</a>
-        <a class="nav-link" onclick="goToSlide(2)">校园成就</a>
-        <a class="nav-link" onclick="goToSlide(3)">实习经历</a>
-        <a class="nav-link" onclick="goToSlide(4)">技能爱好</a>
+        <a class="nav-link-item active" onclick="goToSlide(0)">关于我</a>
+        <a class="nav-link-item" onclick="goToSlide(1)">教育背景</a>
+        <a class="nav-link-item" onclick="goToSlide(2)">校园成就</a>
+        <a class="nav-link-item" onclick="goToSlide(3)">实习经历</a>
+        <a class="nav-link-item" onclick="goToSlide(4)">技能爱好</a>
       </nav>
-      <a class="contact-btn nav-link" onclick="goToSlide(5)">联系我</a>
+      <a class="nav-link-item contact-btn-style" onclick="goToSlide(5)">联系我</a>
     </header>
 
     <!-- 左右翻页按钮 -->
@@ -1360,7 +1370,7 @@
   </div>
 
   <script>
-    // 0. 自适应响应式缩放（彻底解决微信/手机端显示不全、偏右、放大溢出问题）
+    // 0. 自适应响应式缩放
     const BASE_WIDTH = 1965.6;
     const BASE_HEIGHT = 1105;
 
@@ -1368,7 +1378,6 @@
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
 
-      // 无论手机在竖屏还是横屏状态，取 widthScale 和 heightScale 中的较小值，强制将页面完全塞入屏幕视口内部
       const scaleX = windowWidth / BASE_WIDTH;
       const scaleY = windowHeight / BASE_HEIGHT;
       const scale = Math.min(scaleX, scaleY);
@@ -1381,24 +1390,30 @@
     window.addEventListener('orientationchange', handleResize);
     document.addEventListener('DOMContentLoaded', handleResize);
 
-    // 1. 全屏横向滑动控制
+    // 1. 全屏横向滑动与导航完全同步逻辑（修复高亮问题）
     let currentSlide = 0;
     const totalSlides = 6;
     const slider = document.getElementById('slider');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-    // 涵盖所有导航元素（包含右侧联系我按钮）
-    const navLinks = document.querySelectorAll('.nav-link');
+    // 抓取所有添加了 .nav-link-item 的标签
+    const navLinks = document.querySelectorAll('.nav-link-item');
 
     function updateSlide() {
+      // 切换视图
       slider.style.transform = `translateX(-${currentSlide * BASE_WIDTH}px)`;
       prevBtn.classList.toggle('disabled', currentSlide === 0);
       nextBtn.classList.toggle('disabled', currentSlide === totalSlides - 1);
 
-      // 每次切换时统一重置所有导航高亮状态，仅保持当前视图对应的导航高亮
-      navLinks.forEach((link, idx) => {
-        link.classList.toggle('active', idx === currentSlide);
+      // 彻底清空所有高亮，确保绝对不会叠加
+      navLinks.forEach((link) => {
+        link.classList.remove('active');
       });
+
+      // 单独给当前页索引的导航按钮施加 active
+      if (navLinks[currentSlide]) {
+        navLinks[currentSlide].classList.add('active');
+      }
     }
 
     function goToSlide(index) {
@@ -1420,21 +1435,25 @@
       }
     }
 
-    // 2. 手机端与平板端触屏左右滑动翻页支持
+    // 2. 手势及触屏滑动（支持原生放大手势）
     let touchStartX = 0;
     let touchStartY = 0;
 
     document.addEventListener('touchstart', (e) => {
+      // 如果当前是多点触摸（例如双指放大），直接退出手势滑动翻页判定
+      if (e.touches.length > 1) return;
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
     }, { passive: true });
 
     document.addEventListener('touchend', (e) => {
-      // 避免如果在局部可垂直滑动列表中拖动时误触发左右翻页
+      if (e.touches.length > 0) return;
+      
       const target = e.target;
+      // 排除局部小容器的滑动干扰
       if (target && target.closest && (target.closest('.scroll-content-work-grid') || target.closest('.award-sub-list'))) {
         const deltaY = Math.abs(e.changedTouches[0].clientY - touchStartY);
-        if (deltaY > 30) return; // 属于上下滑动，不触发翻页
+        if (deltaY > 30) return;
       }
 
       const touchEndX = e.changedTouches[0].clientX;
@@ -1442,12 +1461,12 @@
       const diffX = touchEndX - touchStartX;
       const diffY = touchEndY - touchStartY;
 
-      // 判断方向：水平滑动距离大于50px 且 水平幅度大于垂直幅度
-      if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+      // 判定水平拖拽滑页
+      if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY)) {
         if (diffX < 0) {
-          nextSlide(); // 向左滑 -> 翻下一页
+          nextSlide();
         } else {
-          prevSlide(); // 向右滑 -> 翻上一页
+          prevSlide();
         }
       }
     }, { passive: true });
