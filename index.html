@@ -138,7 +138,7 @@
       border-radius: 40px;
     }
 
-    /* 统一导航链接样式规则 */
+    /* 统一导航链接及联系我按钮的样式规则 */
     .nav-link-item {
       text-decoration: none;
       color: var(--text-sub);
@@ -164,37 +164,24 @@
       box-shadow: 0 6px 16px rgba(45, 90, 67, 0.35) !important;
     }
 
-    /* ================= 音乐控制按钮修改：绿色圆点背景透明度下降50% ================= */
-    .music-btn {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      /* 将绿色背景透明度降至 50% (alpha = 0.5) */
-      background: linear-gradient(135deg, rgba(45, 90, 67, 0.5) 0%, rgba(61, 122, 91, 0.5) 100%);
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: bold;
-      cursor: pointer;
+    /* 联系我独立基础样式 */
+    .contact-btn-style {
+      background: linear-gradient(135deg, #1f3329 0%, #2d5a43 100%);
+      color: #fff;
+      padding: 8px 22px;
+      border-radius: 32px;
+      text-decoration: none;
+      font-size: 21.6px;
+      font-weight: 500;
       transition: all 0.3s ease;
-      box-shadow: 0 6px 18px rgba(45, 90, 67, 0.35);
-      border: 2px solid rgba(255, 255, 255, 0.9);
-      user-select: none;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(31, 51, 41, 0.2);
     }
 
-    .music-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 24px rgba(45, 90, 67, 0.5);
-      background: linear-gradient(135deg, rgba(30, 63, 46, 0.6) 0%, rgba(45, 90, 67, 0.6) 100%);
-    }
-
-    /* 暂停状态：微深绿底背景透明度同步设为 50% */
-    .music-btn.paused-state {
-      background: linear-gradient(135deg, rgba(56, 107, 81, 0.5) 0%, rgba(34, 71, 52, 0.5) 100%);
-      color: #ffffff;
+    .contact-btn-style:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(45, 90, 67, 0.35);
+      background: linear-gradient(135deg, #2d5a43 0%, #1e3f2e 100%);
     }
 
     /* 横向翻页 */
@@ -377,7 +364,6 @@
       align-items: center;
       height: 100%;
       z-index: 10;
-      perspective: 1000px;
     }
 
     .photo-wrapper {
@@ -388,22 +374,6 @@
       justify-content: center;
       align-items: center;
       margin-bottom: 0;
-      transform-style: preserve-3d;
-      transition: transform 0.3s ease-out;
-      cursor: pointer;
-      animation: portraitFloat 6s ease-in-out infinite;
-    }
-
-    @keyframes portraitFloat {
-      0% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-      25% { transform: translateY(-12px) rotateX(3deg) rotateY(-3deg); }
-      50% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-      75% { transform: translateY(12px) rotateX(-3deg) rotateY(3deg); }
-      100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-    }
-
-    .photo-wrapper.paused {
-      animation-play-state: paused !important;
     }
 
     .connie-tag {
@@ -414,7 +384,7 @@
       font-size: 91px;
       font-weight: 700;
       color: var(--accent-color);
-      transform: rotate(-45deg) translateZ(30px);
+      transform: rotate(-45deg);
       z-index: 10;
       text-shadow: 2px 4px 10px rgba(45, 90, 67, 0.15);
       pointer-events: none;
@@ -429,7 +399,6 @@
       clip-path: polygon(6% 0%, 96% 4%, 100% 100%, 0% 100%);
       border-radius: 45px;
       z-index: 1;
-      transform: translateZ(0px);
     }
 
     .who-img {
@@ -438,13 +407,14 @@
       max-height: 100%;
       object-fit: contain;
       z-index: 2;
-      transform: scale(1.05) translateZ(40px);
+      transform: scale(1.05);
       transform-origin: center center;
       filter: drop-shadow(0 15px 30px rgba(45, 90, 67, 0.2));
       margin-bottom: 0;
       display: block;
-      transition: filter 0.3s ease;
+      transition: transform 0.4s ease;
     }
+    .photo-wrapper:hover .who-img { transform: scale(1.08); }
 
     /* ================= 模块 2: 教育背景 ================= */
     .edu-container {
@@ -925,11 +895,6 @@
       color: var(--text-main);
       line-height: 1.4;
       letter-spacing: 1px;
-      min-height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
     }
 
     .cards-wrapper {
@@ -993,9 +958,6 @@
 </head>
 <body>
 
-  <!-- 隐藏的音频播放器控制 -->
-  <audio id="bgMusic" src="music.mp3" loop autoplay></audio>
-
   <!-- 动态弥散渐变背景 + 底纹 Pattern -->
   <div class="bg-mesh"></div>
   <div class="bg-pattern"></div>
@@ -1015,10 +977,8 @@
         <a class="nav-link-item" onclick="goToSlide(2)">校园成就</a>
         <a class="nav-link-item" onclick="goToSlide(3)">实习经历</a>
         <a class="nav-link-item" onclick="goToSlide(4)">技能爱好</a>
-        <a class="nav-link-item" onclick="goToSlide(5)">联系我</a>
       </nav>
-      <!-- 修改：音乐控件绿色圆点底色，播放显示🎵，暂停显示▶，确保无论黑白图标均清晰Visible -->
-      <div class="music-btn" id="musicBtn" onclick="toggleMusic()" title="播放/暂停背景音乐">🎵</div>
+      <a class="nav-link-item contact-btn-style" onclick="goToSlide(5)">联系我</a>
     </header>
 
     <!-- 左右翻页按钮 -->
@@ -1032,7 +992,7 @@
       <section>
         <div class="who-container">
           <div class="who-left">
-            <div class="who-title"><span id="helloTyping"></span><br>我是曹佳佳</div>
+            <div class="who-title">Hello<br>我是曹佳佳</div>
             <div class="who-subtitle-box">
               <div class="who-subtitle-cn">互联网行业 / 策略运营</div>
               <div class="who-subtitle-en">Internet Industry / Strategy Operations</div>
@@ -1045,7 +1005,7 @@
             </div>
           </div>
           <div class="who-right">
-            <div class="photo-wrapper" id="photoWrapper" onclick="pausePhotoAnimation()">
+            <div class="photo-wrapper">
               <div class="connie-tag">Connie</div>
               <div class="photo-bg-block"></div>
               <img src="myself.jpg" alt="曹佳佳" class="who-img" />
@@ -1372,7 +1332,7 @@
           </div>
 
           <div class="contact-container">
-            <h2 class="contact-title" id="contactTitle" onclick="handleContactClick()"></h2>
+            <h2 class="contact-title">心有旷野，步履不停<br>下一段经历我们共同创造</h2>
             <div class="cards-wrapper">
               <div class="flip-card" onclick="flipAndCopy(this, 'caojiajia0516@163.com')">
                 <div class="flip-card-inner">
@@ -1430,23 +1390,27 @@
     window.addEventListener('orientationchange', handleResize);
     document.addEventListener('DOMContentLoaded', handleResize);
 
-    // 1. 全屏横向滑动与导航完全同步逻辑
+    // 1. 全屏横向滑动与导航完全同步逻辑（修复高亮问题）
     let currentSlide = 0;
     const totalSlides = 6;
     const slider = document.getElementById('slider');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    // 抓取所有添加了 .nav-link-item 的标签
     const navLinks = document.querySelectorAll('.nav-link-item');
 
     function updateSlide() {
+      // 切换视图
       slider.style.transform = `translateX(-${currentSlide * BASE_WIDTH}px)`;
       prevBtn.classList.toggle('disabled', currentSlide === 0);
       nextBtn.classList.toggle('disabled', currentSlide === totalSlides - 1);
 
+      // 彻底清空所有高亮，确保绝对不会叠加
       navLinks.forEach((link) => {
         link.classList.remove('active');
       });
 
+      // 单独给当前页索引的导航按钮施加 active
       if (navLinks[currentSlide]) {
         navLinks[currentSlide].classList.add('active');
       }
@@ -1476,6 +1440,7 @@
     let touchStartY = 0;
 
     document.addEventListener('touchstart', (e) => {
+      // 如果当前是多点触摸（例如双指放大），直接退出手势滑动翻页判定
       if (e.touches.length > 1) return;
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
@@ -1485,6 +1450,7 @@
       if (e.touches.length > 0) return;
       
       const target = e.target;
+      // 排除局部小容器的滑动干扰
       if (target && target.closest && (target.closest('.scroll-content-work-grid') || target.closest('.award-sub-list'))) {
         const deltaY = Math.abs(e.changedTouches[0].clientY - touchStartY);
         if (deltaY > 30) return;
@@ -1495,6 +1461,7 @@
       const diffX = touchEndX - touchStartX;
       const diffY = touchEndY - touchStartY;
 
+      // 判定水平拖拽滑页
       if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY)) {
         if (diffX < 0) {
           nextSlide();
@@ -1503,136 +1470,6 @@
         }
       }
     }, { passive: true });
-
-    // ================= 背景音乐播放控制逻辑 =================
-    const bgMusic = document.getElementById('bgMusic');
-    const musicBtn = document.getElementById('musicBtn');
-
-    // 进入网页界面自动尝试播放
-    document.addEventListener('DOMContentLoaded', () => {
-      bgMusic.play().then(() => {
-        musicBtn.textContent = '🎵';
-        musicBtn.classList.remove('paused-state');
-      }).catch(() => {
-        // 如果浏览器阻止自动播放，点击页面任意地方恢复
-        document.body.addEventListener('click', function startPlay() {
-          bgMusic.play();
-          musicBtn.textContent = '🎵';
-          musicBtn.classList.remove('paused-state');
-          document.body.removeEventListener('click', startPlay);
-        }, { once: true });
-      });
-    });
-
-    function toggleMusic() {
-      if (bgMusic.paused) {
-        bgMusic.play();
-        musicBtn.textContent = '🎵'; // 播放状态：亮白色音符🎵
-        musicBtn.classList.remove('paused-state');
-      } else {
-        bgMusic.pause();
-        musicBtn.textContent = '▶'; // 暂停状态：高清晰度的右三角符号▶
-        musicBtn.classList.add('paused-state');
-      }
-    }
-
-    // ================= 关于我模块人像动态 control =================
-    const photoWrapper = document.getElementById('photoWrapper');
-    let photoPauseTimer = null;
-
-    function pausePhotoAnimation() {
-      if (!photoWrapper) return;
-      photoWrapper.classList.add('paused');
-      
-      if (photoPauseTimer) clearTimeout(photoPauseTimer);
-      
-      // 5 秒后恢复循环动态
-      photoPauseTimer = setTimeout(() => {
-        photoWrapper.classList.remove('paused');
-      }, 5000);
-    }
-
-    // ================= 打字效果逻辑 =================
-    const helloText = "Hello";
-    const helloElement = document.getElementById('helloTyping');
-    let helloIdx = 0;
-    let isDeletingHello = false;
-
-    function typeHello() {
-      if (!helloElement) return;
-      
-      if (isDeletingHello) {
-        helloElement.textContent = helloText.substring(0, helloIdx--);
-        if (helloIdx < 0) {
-          isDeletingHello = false;
-          setTimeout(typeHello, 500);
-          return;
-        }
-        setTimeout(typeHello, 120);
-      } else {
-        helloElement.textContent = helloText.substring(0, helloIdx++);
-        if (helloIdx > helloText.length) {
-          isDeletingHello = true;
-          setTimeout(typeHello, 1800);
-          return;
-        }
-        setTimeout(typeHello, 200);
-      }
-    }
-    typeHello();
-
-    // 联系我标语打字逻辑（点击5s内停止并显示全部，5s后恢复）
-    const contactLine1 = "心有旷野，步履不停";
-    const contactLine2 = "下一段经历我们共同创造";
-    const contactFullText = `${contactLine1}\n${contactLine2}`;
-    const totalChars = contactFullText.length; 
-    const charSpeed = Math.floor(4500 / totalChars); 
-    
-    const contactTitleElem = document.getElementById('contactTitle');
-    let contactIdx = 0;
-    let contactTimer = null;
-    let isContactPaused = false;
-    let contactResumeTimer = null;
-
-    function renderContactText(text) {
-      if (!contactTitleElem) return;
-      contactTitleElem.innerHTML = text.replace('\n', '<br>');
-    }
-
-    function typeContact() {
-      if (isContactPaused) return;
-
-      if (contactIdx <= totalChars) {
-        const currentSubText = contactFullText.substring(0, contactIdx);
-        renderContactText(currentSubText);
-        contactIdx++;
-        contactTimer = setTimeout(typeContact, charSpeed);
-      } else {
-        contactTimer = setTimeout(() => {
-          if (isContactPaused) return;
-          contactIdx = 0;
-          typeContact();
-        }, 2000);
-      }
-    }
-
-    function handleContactClick() {
-      isContactPaused = true;
-      if (contactTimer) clearTimeout(contactTimer);
-      if (contactResumeTimer) clearTimeout(contactResumeTimer);
-      
-      // 显示全部文本
-      renderContactText(contactFullText);
-      
-      // 5 秒后继续打字循环
-      contactResumeTimer = setTimeout(() => {
-        isContactPaused = false;
-        contactIdx = 0;
-        typeContact();
-      }, 5000);
-    }
-
-    typeContact();
 
     // 3. 塔罗牌抽卡逻辑
     const personalityItems = ['ENFP', '浅浅地卷', '情绪稳定', '活力热情', '超强执行力', 'Ownership', '强沟通', '终身学习', '多线程协调'];
