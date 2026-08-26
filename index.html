@@ -391,15 +391,16 @@
       transform-style: preserve-3d;
       transition: transform 0.3s ease-out;
       cursor: pointer;
-      animation: portraitFloat 6s ease-in-out infinite;
+      animation: portraitFloat 5s ease-in-out infinite;
     }
 
+    /* 修改项 2: 增强人像晃动振幅与旋转感 */
     @keyframes portraitFloat {
-      0% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-      25% { transform: translateY(-12px) rotateX(3deg) rotateY(-3deg); }
-      50% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-      75% { transform: translateY(12px) rotateX(-3deg) rotateY(3deg); }
-      100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+      0% { transform: translateY(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); }
+      25% { transform: translateY(-25px) rotateX(8deg) rotateY(-8deg) rotateZ(-2deg) scale(1.03); }
+      50% { transform: translateY(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); }
+      75% { transform: translateY(25px) rotateX(-8deg) rotateY(8deg) rotateZ(2deg) scale(0.97); }
+      100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); }
     }
 
     .photo-wrapper.paused {
@@ -993,8 +994,8 @@
 </head>
 <body>
 
-  <!-- 隐藏的音频播放器控制 -->
-  <audio id="bgMusic" src="music.mp3" loop autoplay></audio>
+  <!-- 修改项 1: 移除 autoplay，取消自动播放 -->
+  <audio id="bgMusic" src="music.mp3" loop></audio>
 
   <!-- 动态弥散渐变背景 + 底纹 Pattern -->
   <div class="bg-mesh"></div>
@@ -1017,8 +1018,8 @@
         <a class="nav-link-item" onclick="goToSlide(4)">技能爱好</a>
         <a class="nav-link-item" onclick="goToSlide(5)">联系我</a>
       </nav>
-      <!-- 修改：音乐控件绿色圆点底色，播放显示🎵，暂停显示▶，确保无论黑白图标均清晰Visible -->
-      <div class="music-btn" id="musicBtn" onclick="toggleMusic()" title="播放/暂停背景音乐">🎵</div>
+      <!-- 修改项 1: 初始默认展示暂停状态图标 ▶，并使用 paused-state 类名 -->
+      <div class="music-btn paused-state" id="musicBtn" onclick="toggleMusic()" title="播放/暂停背景音乐">▶</div>
     </header>
 
     <!-- 左右翻页按钮 -->
@@ -1532,22 +1533,7 @@
     const bgMusic = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicBtn');
 
-    // 进入网页界面自动尝试播放
-    document.addEventListener('DOMContentLoaded', () => {
-      bgMusic.play().then(() => {
-        musicBtn.textContent = '🎵';
-        musicBtn.classList.remove('paused-state');
-      }).catch(() => {
-        // 如果浏览器阻止自动播放，点击页面任意地方恢复
-        document.body.addEventListener('click', function startPlay() {
-          bgMusic.play();
-          musicBtn.textContent = '🎵';
-          musicBtn.classList.remove('paused-state');
-          document.body.removeEventListener('click', startPlay);
-        }, { once: true });
-      });
-    });
-
+    // 修改项 1: 移除全局点击自动触发，仅保留右上角按钮点击切换逻辑
     function toggleMusic() {
       if (bgMusic.paused) {
         bgMusic.play();
