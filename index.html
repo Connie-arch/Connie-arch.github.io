@@ -44,7 +44,6 @@
       font-family: 'Noto Sans SC', sans-serif;
       color: var(--text-main);
       background-color: var(--bg-green-light);
-      /* 关键：恢复系统默认手势缩放行为 */
       touch-action: manipulation;
       -webkit-text-size-adjust: 100%;
     }
@@ -138,13 +137,12 @@
       border-radius: 40px;
     }
 
-    /* 统一导航链接样式规则 */
     .nav-link-item {
       text-decoration: none;
       color: var(--text-sub);
-      font-size: 21.6px;
+      font-size: 20px;
       font-weight: 500;
-      padding: 8px 20px;
+      padding: 8px 16px;
       border-radius: 26px;
       transition: all 0.3s ease;
       cursor: pointer;
@@ -157,19 +155,16 @@
       box-shadow: 0 6px 16px rgba(45, 90, 67, 0.3);
     }
 
-    /* 高亮状态：精确覆盖所有类型按钮 */
     .nav-link-item.active {
       color: #fff !important;
       background: linear-gradient(135deg, #2d5a43 0%, #1e3f2e 100%) !important;
       box-shadow: 0 6px 16px rgba(45, 90, 67, 0.35) !important;
     }
 
-    /* ================= 音乐控制按钮修改：绿色圆点背景透明度下降50% ================= */
     .music-btn {
       width: 52px;
       height: 52px;
       border-radius: 50%;
-      /* 将绿色背景透明度降至 50% (alpha = 0.5) */
       background: linear-gradient(135deg, rgba(45, 90, 67, 0.5) 0%, rgba(61, 122, 91, 0.5) 100%);
       color: #ffffff;
       display: flex;
@@ -191,7 +186,6 @@
       background: linear-gradient(135deg, rgba(30, 63, 46, 0.6) 0%, rgba(45, 90, 67, 0.6) 100%);
     }
 
-    /* 暂停状态：微深绿底背景透明度同步设为 50% */
     .music-btn.paused-state {
       background: linear-gradient(135deg, rgba(56, 107, 81, 0.5) 0%, rgba(34, 71, 52, 0.5) 100%);
       color: #ffffff;
@@ -199,7 +193,7 @@
 
     /* 横向翻页 */
     .slider-container {
-      width: calc(var(--base-width) * 6);
+      width: calc(var(--base-width) * 7);
       height: 100%;
       display: flex;
       transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
@@ -244,6 +238,7 @@
     .edu-header { margin-bottom: 60px; }
     .campus-header { margin-bottom: 35px; }
     .intern-header { margin-bottom: 40px; }
+    .ai-header { margin-bottom: 30px; }
     .skill-header { margin-bottom: 60px; }
 
     /* 左右翻页按钮 */
@@ -394,7 +389,6 @@
       animation: portraitFloat 5s ease-in-out infinite;
     }
 
-    /* 修改项 2: 增强人像晃动振幅与旋转感 */
     @keyframes portraitFloat {
       0% { transform: translateY(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); }
       25% { transform: translateY(-25px) rotateX(8deg) rotateY(-8deg) rotateZ(-2deg) scale(1.03); }
@@ -755,7 +749,115 @@
       color: #fff;
     }
 
-    /* ================= 模块 5: 技能爱好 ================= */
+    /* ================= 新增模块: AI项目 ================= */
+    .ai-project-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 1560px;
+      width: 100%;
+    }
+
+    .ai-project-card {
+      width: 100%;
+      padding: 36px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .ai-project-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid rgba(45, 90, 67, 0.15);
+      padding-bottom: 16px;
+    }
+
+    .ai-project-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent-color);
+    }
+
+    .ai-project-file-label {
+      font-size: 18px;
+      color: var(--text-sub);
+      background: rgba(45, 90, 67, 0.08);
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    /* PPT多页可切换展示框样式 */
+    .ppt-viewer-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #111;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ppt-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+      background: #f9fbf9;
+    }
+
+    .ppt-slide.active {
+      opacity: 1;
+      z-index: 2;
+    }
+
+    /* PPT 控制栏 */
+    .ppt-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding: 0 10px;
+    }
+
+    .ppt-btn-group {
+      display: flex;
+      gap: 16px;
+    }
+
+    .ppt-control-btn {
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #2d5a43 0%, #1e3f2e 100%);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(45, 90, 67, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .ppt-control-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(45, 90, 67, 0.3);
+    }
+
+    .ppt-page-indicator {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-sub);
+    }
+
+    /* ================= 模块 6: 技能爱好 ================= */
     .skill-layout-container {
       display: flex;
       gap: 36px;
@@ -891,7 +993,7 @@
     .carousel img.active { opacity: 1; }
     .hobby-title { padding: 12px; font-size: 22.1px; font-weight: 700; color: var(--text-main); background: rgba(255, 255, 255, 0.6); }
 
-    /* ================= 模块 6: 联系我 ================= */
+    /* ================= 模块 7: 联系我 ================= */
     .contact-wrapper {
       position: relative;
       max-width: 1235px;
@@ -1030,7 +1132,6 @@
 </head>
 <body>
 
-  <!-- 修改项 1: 移除 autoplay，取消自动播放 -->
   <audio id="bgMusic" src="music.mp3" loop></audio>
 
   <!-- 动态弥散渐变背景 + 底纹 Pattern -->
@@ -1051,10 +1152,10 @@
         <a class="nav-link-item" onclick="goToSlide(1)">教育背景</a>
         <a class="nav-link-item" onclick="goToSlide(2)">校园成就</a>
         <a class="nav-link-item" onclick="goToSlide(3)">实习经历</a>
-        <a class="nav-link-item" onclick="goToSlide(4)">技能爱好</a>
-        <a class="nav-link-item" onclick="goToSlide(5)">联系我</a>
+        <a class="nav-link-item" onclick="goToSlide(4)">AI项目</a>
+        <a class="nav-link-item" onclick="goToSlide(5)">技能爱好</a>
+        <a class="nav-link-item" onclick="goToSlide(6)">联系我</a>
       </nav>
-      <!-- 修改项 1: 初始默认展示暂停状态图标 ▶，并使用 paused-state 类名 -->
       <div class="music-btn paused-state" id="musicBtn" onclick="toggleMusic()" title="播放/暂停背景音乐">▶</div>
     </header>
 
@@ -1263,7 +1364,6 @@
                   <div class="award-sub-item"><span class="date">2023/05</span> “清远杯”创业大赛铜奖</div>
                   <div class="award-sub-item"><span class="date">2022/12</span> 社会实践优秀团队</div>
                   <div class="award-sub-item"><span class="date">2022/11</span> 第七届社会实践青年研究年会一等奖</div>
-                  <div class="award-sub-item"><span class="date">2022/05</span> 结构设计竞赛二等奖</div>
                   <div class="award-sub-item"><span class="date">2021/11</span> 第六届社会实践青年研究年会三等奖</div>
                   <div class="award-sub-item"><span class="date">2021/05</span> 数学新生杯建模校级三等奖</div>
                   <div class="award-sub-item"><span class="date">2021/05</span> 结构设计竞赛三等奖</div>
@@ -1346,7 +1446,41 @@
         </div>
       </section>
 
-      <!-- 5. 技能爱好 -->
+      <!-- 5. 新增模块: AI项目 -->
+      <section>
+        <div class="section-header ai-header">
+          <div class="section-slogan-cn">拥抱AI，激发无限可能</div>
+          <div class="section-slogan-en">Embrace AI, unlock limitless possibilities</div>
+        </div>
+        <div class="ai-project-wrapper">
+          <div class="ai-project-card glass-card">
+            <div class="ai-project-title-row">
+              <span class="ai-project-title">小红书种草SEO词资产管家</span>
+              <span class="ai-project-file-label">📄 种草SEO词资产管家.pptx</span>
+            </div>
+            
+            <!-- PPT幻灯片内嵌可切换展示区 -->
+            <div>
+              <div class="ppt-viewer-container" id="pptViewer">
+                <!-- 此处引入导出的PPT页面图片，您可以命名为 ppt_page1.jpg, ppt_page2.jpg ... -->
+                <img src="ppt_page1.jpg" alt="PPT封面页" class="ppt-slide active" />
+                <img src="ppt_page2.jpg" alt="PPT第二页" class="ppt-slide" />
+                <img src="ppt_page3.jpg" alt="PPT第三页" class="ppt-slide" />
+                <img src="ppt_page4.jpg" alt="PPT第四页" class="ppt-slide" />
+              </div>
+              <div class="ppt-controls">
+                <div class="ppt-page-indicator" id="pptIndicator">第 1 页 / 共 4 页</div>
+                <div class="ppt-btn-group">
+                  <button class="ppt-control-btn" onclick="prevPptSlide()">上一页</button>
+                  <button class="ppt-control-btn" onclick="nextPptSlide()">下一页</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. 技能爱好 -->
       <section>
         <div class="section-header skill-header">
           <div class="section-slogan-cn">底色多元，热爱不息</div>
@@ -1406,7 +1540,7 @@
         </div>
       </section>
 
-      <!-- 6. 联系我 -->
+      <!-- 7. 联系我 -->
       <section>
         <div class="contact-wrapper">
           <div class="art-bg-decoration">
@@ -1475,20 +1609,19 @@
 
     // 1. 全屏横向滑动与导航完全同步逻辑
     let currentSlide = 0;
-    const totalSlides = 6;
+    const totalSlides = 7; // 更新总模块数
     const slider = document.getElementById('slider');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const navLinks = document.querySelectorAll('.nav-link-item');
     const sections = document.querySelectorAll('section');
 
-    // 预加载当前页和相连页面的所有图片，提升翻页瞬间的呈现体验
     function loadSectionImages(index) {
       if (sections[index]) {
         const imgs = sections[index].querySelectorAll('img');
         imgs.forEach(img => {
           if (img.loading === 'lazy') {
-            img.loading = 'eager'; // 强制优先加载
+            img.loading = 'eager';
           }
         });
       }
@@ -1507,7 +1640,6 @@
         navLinks[currentSlide].classList.add('active');
       }
 
-      // 预加载当前页及相邻一页的图片
       loadSectionImages(currentSlide);
       if (currentSlide + 1 < totalSlides) loadSectionImages(currentSlide + 1);
       if (currentSlide - 1 >= 0) loadSectionImages(currentSlide - 1);
@@ -1532,13 +1664,12 @@
       }
     }
 
-    // 页面初始化时先预加载第1页和第2页
     document.addEventListener('DOMContentLoaded', () => {
       loadSectionImages(0);
       loadSectionImages(1);
     });
 
-    // 2. 手势及触屏滑动（支持原生放大手势）
+    // 2. 手势及触屏滑动
     let touchStartX = 0;
     let touchStartY = 0;
 
@@ -1571,19 +1702,47 @@
       }
     }, { passive: true });
 
+    // ================= PPT 内嵌多页切换逻辑 =================
+    let currentPptIndex = 0;
+    const pptSlides = document.querySelectorAll('.ppt-slide');
+    const pptIndicator = document.getElementById('pptIndicator');
+    const totalPptSlides = pptSlides.length;
+
+    function updatePptSlide() {
+      pptSlides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentPptIndex);
+      });
+      if (pptIndicator) {
+        pptIndicator.textContent = `第 ${currentPptIndex + 1} 页 / 共 ${totalPptSlides} 页`;
+      }
+    }
+
+    function nextPptSlide() {
+      if (currentPptIndex < totalPptSlides - 1) {
+        currentPptIndex++;
+        updatePptSlide();
+      }
+    }
+
+    function prevPptSlide() {
+      if (currentPptIndex > 0) {
+        currentPptIndex--;
+        updatePptSlide();
+      }
+    }
+
     // ================= 背景音乐播放控制逻辑 =================
     const bgMusic = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicBtn');
 
-    // 修改项 1: 移除全局点击自动触发，仅保留右上角按钮点击切换逻辑
     function toggleMusic() {
       if (bgMusic.paused) {
         bgMusic.play();
-        musicBtn.textContent = '🎵'; // 播放状态：亮白色音符🎵
+        musicBtn.textContent = '🎵';
         musicBtn.classList.remove('paused-state');
       } else {
         bgMusic.pause();
-        musicBtn.textContent = '▶'; // 暂停状态：高清晰度的右三角符号▶
+        musicBtn.textContent = '▶';
         musicBtn.classList.add('paused-state');
       }
     }
@@ -1598,7 +1757,6 @@
       
       if (photoPauseTimer) clearTimeout(photoPauseTimer);
       
-      // 5 秒后恢复循环动态
       photoPauseTimer = setTimeout(() => {
         photoWrapper.classList.remove('paused');
       }, 5000);
@@ -1633,7 +1791,6 @@
     }
     typeHello();
 
-    // 联系我标语打字逻辑（点击5s内停止并显示全部，5s后恢复）
     const contactLine1 = "心有旷野，步履不停";
     const contactLine2 = "下一段经历我们共同创造";
     const contactFullText = `${contactLine1}\n${contactLine2}`;
@@ -1673,10 +1830,8 @@
       if (contactTimer) clearTimeout(contactTimer);
       if (contactResumeTimer) clearTimeout(contactResumeTimer);
       
-      // 显示全部文本
       renderContactText(contactFullText);
       
-      // 5 秒后继续打字循环
       contactResumeTimer = setTimeout(() => {
         isContactPaused = false;
         contactIdx = 0;
