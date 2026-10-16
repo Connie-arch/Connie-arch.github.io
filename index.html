@@ -140,9 +140,9 @@
     .nav-link-item {
       text-decoration: none;
       color: var(--text-sub);
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 500;
-      padding: 8px 16px;
+      padding: 8px 15px;
       border-radius: 26px;
       transition: all 0.3s ease;
       cursor: pointer;
@@ -238,7 +238,7 @@
     .edu-header { margin-bottom: 60px; }
     .campus-header { margin-bottom: 35px; }
     .intern-header { margin-bottom: 40px; }
-    .ai-header { margin-bottom: 30px; }
+    .ai-header { margin-bottom: 25px; }
     .skill-header { margin-bottom: 60px; }
 
     /* 左右翻页按钮 */
@@ -749,7 +749,7 @@
       color: #fff;
     }
 
-    /* ================= 新增模块: AI项目 ================= */
+    /* ================= 新增模块: AI项目 (PDF 网页直接预览) ================= */
     .ai-project-wrapper {
       display: flex;
       flex-direction: column;
@@ -760,10 +760,10 @@
 
     .ai-project-card {
       width: 100%;
-      padding: 36px 48px;
+      padding: 30px 40px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 16px;
     }
 
     .ai-project-title-row {
@@ -771,90 +771,38 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 2px solid rgba(45, 90, 67, 0.15);
-      padding-bottom: 16px;
+      padding-bottom: 12px;
     }
 
     .ai-project-title {
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 700;
       color: var(--accent-color);
     }
 
     .ai-project-file-label {
-      font-size: 18px;
+      font-size: 16px;
       color: var(--text-sub);
       background: rgba(45, 90, 67, 0.08);
       padding: 6px 14px;
       border-radius: 20px;
     }
 
-    /* PPT多页可切换展示框样式 */
-    .ppt-viewer-container {
-      position: relative;
+    /* PDF 预览框容器 */
+    .pdf-viewer-container {
       width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #111;
+      height: 520px;
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border: 1px solid rgba(45, 90, 67, 0.2);
     }
 
-    .ppt-slide {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .pdf-viewer-container iframe {
       width: 100%;
       height: 100%;
-      object-fit: contain;
-      opacity: 0;
-      transition: opacity 0.4s ease-in-out;
-      background: #f9fbf9;
-    }
-
-    .ppt-slide.active {
-      opacity: 1;
-      z-index: 2;
-    }
-
-    /* PPT 控制栏 */
-    .ppt-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-      padding: 0 10px;
-    }
-
-    .ppt-btn-group {
-      display: flex;
-      gap: 16px;
-    }
-
-    .ppt-control-btn {
-      padding: 10px 24px;
-      background: linear-gradient(135deg, #2d5a43 0%, #1e3f2e 100%);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 600;
       border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(45, 90, 67, 0.2);
-      transition: all 0.2s ease;
-    }
-
-    .ppt-control-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(45, 90, 67, 0.3);
-    }
-
-    .ppt-page-indicator {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text-sub);
     }
 
     /* ================= 模块 6: 技能爱好 ================= */
@@ -1446,7 +1394,7 @@
         </div>
       </section>
 
-      <!-- 5. 新增模块: AI项目 -->
+      <!-- 5. 新增模块: AI项目 (PDF 预览) -->
       <section>
         <div class="section-header ai-header">
           <div class="section-slogan-cn">拥抱AI，激发无限可能</div>
@@ -1456,25 +1404,12 @@
           <div class="ai-project-card glass-card">
             <div class="ai-project-title-row">
               <span class="ai-project-title">小红书种草SEO词资产管家</span>
-              <span class="ai-project-file-label">📄 种草SEO词资产管家.pptx</span>
+              <span class="ai-project-file-label">📄 种草SEO词资产管家.pdf</span>
             </div>
             
-            <!-- PPT幻灯片内嵌可切换展示区 -->
-            <div>
-              <div class="ppt-viewer-container" id="pptViewer">
-                <!-- 此处引入导出的PPT页面图片，您可以命名为 ppt_page1.jpg, ppt_page2.jpg ... -->
-                <img src="ppt_page1.jpg" alt="PPT封面页" class="ppt-slide active" />
-                <img src="ppt_page2.jpg" alt="PPT第二页" class="ppt-slide" />
-                <img src="ppt_page3.jpg" alt="PPT第三页" class="ppt-slide" />
-                <img src="ppt_page4.jpg" alt="PPT第四页" class="ppt-slide" />
-              </div>
-              <div class="ppt-controls">
-                <div class="ppt-page-indicator" id="pptIndicator">第 1 页 / 共 4 页</div>
-                <div class="ppt-btn-group">
-                  <button class="ppt-control-btn" onclick="prevPptSlide()">上一页</button>
-                  <button class="ppt-control-btn" onclick="nextPptSlide()">下一页</button>
-                </div>
-              </div>
+            <!-- 网页直接预览PDF的容器 (支持翻页、缩放与下载) -->
+            <div class="pdf-viewer-container">
+              <iframe src="种草SEO词资产管家.pdf" title="小红书种草SEO词资产管家预览"></iframe>
             </div>
           </div>
         </div>
@@ -1609,7 +1544,7 @@
 
     // 1. 全屏横向滑动与导航完全同步逻辑
     let currentSlide = 0;
-    const totalSlides = 7; // 更新总模块数
+    const totalSlides = 7; // 总模块数增至 7
     const slider = document.getElementById('slider');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -1683,7 +1618,7 @@
       if (e.touches.length > 0) return;
       
       const target = e.target;
-      if (target && target.closest && (target.closest('.scroll-content-work-grid') || target.closest('.award-sub-list'))) {
+      if (target && target.closest && (target.closest('.scroll-content-work-grid') || target.closest('.award-sub-list') || target.closest('.pdf-viewer-container'))) {
         const deltaY = Math.abs(e.changedTouches[0].clientY - touchStartY);
         if (deltaY > 30) return;
       }
@@ -1701,35 +1636,6 @@
         }
       }
     }, { passive: true });
-
-    // ================= PPT 内嵌多页切换逻辑 =================
-    let currentPptIndex = 0;
-    const pptSlides = document.querySelectorAll('.ppt-slide');
-    const pptIndicator = document.getElementById('pptIndicator');
-    const totalPptSlides = pptSlides.length;
-
-    function updatePptSlide() {
-      pptSlides.forEach((slide, idx) => {
-        slide.classList.toggle('active', idx === currentPptIndex);
-      });
-      if (pptIndicator) {
-        pptIndicator.textContent = `第 ${currentPptIndex + 1} 页 / 共 ${totalPptSlides} 页`;
-      }
-    }
-
-    function nextPptSlide() {
-      if (currentPptIndex < totalPptSlides - 1) {
-        currentPptIndex++;
-        updatePptSlide();
-      }
-    }
-
-    function prevPptSlide() {
-      if (currentPptIndex > 0) {
-        currentPptIndex--;
-        updatePptSlide();
-      }
-    }
 
     // ================= 背景音乐播放控制逻辑 =================
     const bgMusic = document.getElementById('bgMusic');
