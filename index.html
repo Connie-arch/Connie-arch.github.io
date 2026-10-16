@@ -238,7 +238,8 @@
     .edu-header { margin-bottom: 60px; }
     .campus-header { margin-bottom: 35px; }
     .intern-header { margin-bottom: 40px; }
-    .ai-header { margin-bottom: 25px; }
+    /* 优化点：缩减 AI 模块头部间距，让 Slogan 整体往上提，且不破坏整体排版 */
+    .ai-header { margin-bottom: 8px; }
     .skill-header { margin-bottom: 60px; }
 
     /* 左右翻页按钮 */
@@ -749,7 +750,7 @@
       color: #fff;
     }
 
-    /* ================= 新增模块: AI项目 (PDF 网页直接预览) ================= */
+    /* ================= 新增模块: AI项目 (PDF 全局预览与 63% 默认缩放优化) ================= */
     .ai-project-wrapper {
       display: flex;
       flex-direction: column;
@@ -760,10 +761,10 @@
 
     .ai-project-card {
       width: 100%;
-      padding: 30px 40px;
+      padding: 20px 32px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 10px;
     }
 
     .ai-project-title-row {
@@ -771,27 +772,27 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 2px solid rgba(45, 90, 67, 0.15);
-      padding-bottom: 12px;
+      padding-bottom: 8px;
     }
 
     .ai-project-title {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 700;
       color: var(--accent-color);
     }
 
     .ai-project-file-label {
-      font-size: 16px;
+      font-size: 14px;
       color: var(--text-sub);
       background: rgba(45, 90, 67, 0.08);
-      padding: 6px 14px;
+      padding: 4px 10px;
       border-radius: 20px;
     }
 
-    /* PDF 预览框容器 */
+    /* 优化点：调整容器高度至 670px，配合 63% 缩放呈现非常舒适的全局预览感 */
     .pdf-viewer-container {
       width: 100%;
-      height: 520px;
+      height: 670px;
       border-radius: 16px;
       overflow: hidden;
       background: #ffffff;
@@ -1394,7 +1395,7 @@
         </div>
       </section>
 
-      <!-- 5. 新增模块: AI项目 (PDF 预览) -->
+      <!-- 5. 新增模块: AI项目 (Slogan 上移、PDF 全局化预览并指定 #view=Fit&zoom=63) -->
       <section>
         <div class="section-header ai-header">
           <div class="section-slogan-cn">拥抱AI，激发无限可能</div>
@@ -1407,9 +1408,9 @@
               <span class="ai-project-file-label">📄 种草SEO词资产管家.pdf</span>
             </div>
             
-            <!-- 网页直接预览PDF的容器 (支持翻页、缩放与下载) -->
+            <!-- PDF 预览容器：附带 #view=Fit&zoom=63 参数帮助浏览器进行默认 63% 视口全局呈现 -->
             <div class="pdf-viewer-container">
-              <iframe src="种草SEO词资产管家.pdf" title="小红书种草SEO词资产管家预览"></iframe>
+              <iframe src="种草SEO词资产管家.pdf#view=Fit&zoom=63" title="小红书种草SEO词资产管家预览"></iframe>
             </div>
           </div>
         </div>
@@ -1544,7 +1545,7 @@
 
     // 1. 全屏横向滑动与导航完全同步逻辑
     let currentSlide = 0;
-    const totalSlides = 7; // 总模块数增至 7
+    const totalSlides = 7;
     const slider = document.getElementById('slider');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
